@@ -13,8 +13,8 @@ export const QuinaGenerator = () => {
     };
 
     return (
-        <div className=" m-auto flex flex-col items-center mt-10 border border-sky-500 px-2 py-4 rounded-lg shadow-lg bg-white">
-            <h1 className="text-2xl font-bold text-blue-700">Gerador da Quina</h1>
+        <div className=" flex flex-col items-center mt-10 border border-sky-500 w-full py-2 rounded-lg shadow-lg bg-white">
+            <h1 className="text-[3rem] font-medium text-blue-700 font-[Caramel] bg-blue-50 px-3 rounded-lg text-center">Gerador da Quina</h1>
 
             {/* 🔹 Selecionar quantidade de jogos */}
             <div className="mt-4 flex items-center gap-4">
@@ -35,7 +35,7 @@ export const QuinaGenerator = () => {
             {/* 🔹 Botão para gerar */}
             <button
                 onClick={handleGerar}
-                className="mt-4 px-6 py-2 bg-sky-600 text-white rounded-lg shadow hover:bg-purple-800"
+                className="mt-4 px-6 py-2 bg-sky-600 text-white rounded-lg shadow hover:bg-blue-800"
             >
                 Gerar Jogos
             </button>
@@ -48,7 +48,7 @@ export const QuinaGenerator = () => {
                         {jogo.map((n) => (
                             <span
                                 key={n}
-                                className="w-10 h-10 flex items-center justify-center rounded-full border border-blue-300 bg-blue-100 text-indigo-800 font-bold text-lg shadow"
+                                className="w-10 h-10 flex items-center justify-center rounded-full border border-blue-300 bg-blue-50 text-indigo-800 font-bold text-lg shadow"
                             >
                                 {n}
                             </span>

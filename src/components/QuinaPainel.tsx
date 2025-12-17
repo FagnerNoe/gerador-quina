@@ -23,13 +23,13 @@ function QuinaPanel() {
   if (!resultado) return <p className="text-center text-red-500">Não foi possível carregar os dados.</p>;
 
   return (
-    <div className=" font-sans bg-gray-100 rounded-lg shadow-md max-w-2xl mx-auto">
-      <h2 className="text-2xl font-bold text-indigo-600 mb-2">Resultado da Quina</h2>
-      <p className="text-gray-700">Concurso: <span className="font-bold bg-blue-300 px-2 rounded-lg text-white text-lg">{resultado.numero}</span></p>
-      <p className="text-gray-700 mb-4">Data: {resultado.dataApuracao}</p>
+    <div className=" font-sans rounded-lg shadow-md max-w-2xl mx-auto text-center mt-6">
+      <h2 className="text-[3.5rem] font-bold bg-clip-text bg-linear-to-r from-blue-800 to-sky-300 text-transparent mb-1 font-[Caramel]">Quina</h2>
+      <p className="text-gray-600">Concurso: <span className="font-bold bg-blue-400 px-4 rounded-md text-white text-lg font-[Poppins]">{resultado.numero}</span></p>
+      <p className="text-gray-700 mb-4 font-bold font-[Lilita_One]">{resultado.dataApuracao}</p>
 
-      <h3 className="text-xl font-semibold text-gray-800 mb-2 text-center">Números sorteados:</h3>
-      <div className="flex  items-center justify-center gap-3 mb-6">
+      <h3 className="text-xl  text-gray-600 mb-2 text-center font-[Lilita_One]">Números sorteados:</h3>
+      <div className="flex  items-center justify-center gap-3 mb-10">
         {resultado.listaDezenas.map((dezena: string, index: number) => (
           <span
             key={index}
@@ -40,7 +40,7 @@ function QuinaPanel() {
         ))}
       </div>
 
-      <h3 className="text-xl font-semibold text-gray-800 mb-2">Rateio dos Prêmios</h3>
+      <h3 className="text-xl font-semibold text-gray-500 mb-2 font-[Poppins]">Detalhes do Sorteio</h3>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300 rounded-lg shadow-sm bg-white">
           <thead className="bg-sky-600 text-white">
@@ -53,9 +53,9 @@ function QuinaPanel() {
           <tbody>
             {resultado.listaRateioPremio.map((premio: any, index: number) => (
               <tr key={index} className="border-t border-gray-200">
-                <td className="px-4 py-2">{premio.descricaoFaixa}</td>
+                <td className="px-4 py-2 text-start text-sm">{premio.descricaoFaixa}</td>
                 <td className="px-4 py-2 font-medium">{premio.numeroDeGanhadores}</td>
-                <td className="px-4 py-2 text-emerald-500 font-semibold text-center">
+                <td className="px-4 py-2 text-green-600 font-semibold font-[Poppins] text-center">
                   R$ {premio.valorPremio.toLocaleString("pt-BR")}
                 </td>
               </tr>
