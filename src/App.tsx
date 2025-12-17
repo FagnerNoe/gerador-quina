@@ -6,27 +6,7 @@ import QuinaPanel from './components/QuinaPainel'
 
 function App() {
   const [modalidade, setModalidade] = useState<string | null>(null);
-  const [resultado, setResultado] = useState(null);
-
-
-  // Função para buscar resultados da API da Caixa
-  const fetchResultados = async (modalidade: any) => {
-    try {
-      // Exemplo de endpoint (ajuste conforme a API real da Caixa)
-      const response = await fetch(`https://api-caixa/${modalidade}`);
-      const data = await response.json();
-      setResultado(data);
-    } catch (error) {
-      console.error("Erro ao buscar resultados:", error);
-    }
-  };
-
-  // Buscar resultados sempre que a modalidade mudar
-  useEffect(() => {
-    fetchResultados(modalidade);
-  }, [modalidade]);
-
-
+  
   return (
     <div className="p-2 flex flex-col items-center  min-h-screen">
       <div className="w-[70%] flex justify-center py-3 items-center  shadow-sm shadow-sky-500 rounded-lg  ">
