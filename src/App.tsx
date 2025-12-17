@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './App.css'
 import { QuinaGenerator } from './components/QuinaGerador'
 import QuinaPanel from './components/QuinaPainel'
