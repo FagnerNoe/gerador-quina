@@ -9,11 +9,6 @@ import { Generator } from './components/Gerador';
 function App() {
   const [modalidade, setModalidade] = useState<Modalidade>("Quina");
 
-
-
-  // Função para buscar resultados da API da Caixa
-
-
   return (
     <div className="p-2 flex flex-col items-center  min-h-screen">
       <div className="w-[70%] flex justify-center py-3 items-center  shadow-md shadow-gray-400 rounded-md  ">
