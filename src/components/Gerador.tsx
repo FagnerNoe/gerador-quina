@@ -16,7 +16,7 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
     };
 
     return (
-        <div className="flex flex-col items-center mt-10 border rounded-lg shadow-lg bg-white w-full p-6">
+        <div className="flex flex-col items-center mt-10 rounded-lg shadow-lg bg-white w-full p-4">
             <h1 className={`bg-clip-text bg-linear-to-l ${configs[modalidade].gradient} text-transparent text-2xl font-[Poppins] font-semibold`}>Palpites</h1>
 
             <div className="mt-4 flex items-center gap-4">
