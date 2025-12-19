@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { configs, type Modalidade } from "../service/Config";
 import { gerarNumeros } from "../service/Geradores";
 
@@ -7,6 +7,11 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
     const [quantidade, setQuantidade] = useState<number>(1);
     const [jogos, setJogos] = useState<number[][]>([]);
 
+    useEffect(() => {
+        setJogos([]);
+    }, [modalidade]);
+
+
     const handleGerar = () => {
         const novosJogos: number[][] = [];
         for (let i = 0; i < quantidade; i++) {
@@ -14,6 +19,11 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
         }
         setJogos(novosJogos);
     };
+
+    const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+
+
+
 
     return (
         <div className="flex flex-col items-center mt-10 rounded-lg shadow-lg bg-white w-full p-4">
@@ -32,15 +42,27 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
                 Gerar Jogos
             </button>
 
-            <div className="mt-6 flex flex-col gap-2">
+            <div className={` mt-6 flex flex-col gap-5 items-center justify-center w-full`}>
                 {jogos.map((jogo: any, index: number) => (
-                    <div key={index} className="flex gap-2 items-center justify-center">
-                        <span className="text-gray-600 text-sm">{index + 1}:</span>
+                    <div key={index} className={`grid border ${configs[modalidade].borda} w-full p-3 rounded-lg gap-x-2 gap-y-3 items-center justify-center shadow-md
+                    ${modalidade === "Mega-Sena" ? "grid-cols-6 gap-x-2" : "grid-cols-5"} 
+                    ${modalidade === "Dia de Sorte" ? "grid-cols-7  " : ""}
+                    `}>
                         {jogo.map((num: any) => (
-                            <span key={num} className={`${configs[modalidade].borda} w-10 h-10 flex items-center justify-center rounded-full border-2 text-indigo-800 font-bold`}>
+                            <span key={num} className={`flex items-center justify-center rounded-full border-2 text-indigo-800 font-bold shadow-md
+                            ${configs[modalidade].borda} 
+                        ${modalidade === "Dia de Sorte" ? "w-10 h-10" : "p-3 w-12 h-12"}
+                    
+                           `}>
                                 {num}
                             </span>
+
                         ))}
+                        {modalidade === "Dia de Sorte" && (
+                            <span className="text-sm font-[Poppins] text-gray-600 ml-4">
+                                <span className="font-bold text-yellow-600">{meses[Math.floor(Math.random() * meses.length)]}</span>
+                            </span>
+                        )}
                     </div>
                 ))}
             </div>

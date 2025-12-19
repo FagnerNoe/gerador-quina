@@ -32,25 +32,33 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
 
 
       <h3 className="text-xl  text-gray-600 mb-2 text-center font-[Lilita_One]">Números sorteados:</h3>
-      <div className={`grid  px-3  items-center justify-end-safe gap-3 mb-6 
-    ${modalidade === "Mega-Sena" ? "grid-cols-6" : "grid-cols-5"} `}
+      <div className={`grid  px-3  items-center justify-center gap-3 mb-4 
+    ${modalidade === "Mega-Sena" ? "grid-cols-6" : "grid-cols-5"}
+    ${modalidade === "Dia de Sorte" ? "grid-cols-7 gap-x-1" : ""}
+  
+     `}
       >
         {resultado.listaDezenas.map((dezena: string, index: number) => (
           <span
             key={index}
-            className={`text-lg font-bold ${configs[modalidade].background} text-white ${modalidade == "Mega-Sena" ? "px-3 py-2" : "p-3"} rounded-full shadow-lg`}
+            className={`text-lg font-bold ${configs[modalidade].background} text-white ${modalidade == "Mega-Sena" ? "px-3 py-2" : "p-3"} ${modalidade == "Dia de Sorte" ? "px-3 py-2" : ""} rounded-full shadow-lg`}
           >
             {dezena}
           </span>
         ))}
       </div>
       {modalidade === "Dia de Sorte" && (
-        <span className="mt-4 text-lg font-bold bg-yellow-700 text-white p-3 rounded-xl shadow-md">
-          {resultado.nomeTimeCoracaoMesSorte}
-        </span>
+        <div className="space-y-2">
+          <p className="text-xs font-[Poppins] text-gray-500  ">Mês da Sorte</p>
+          <span className=" text-lg font-bold  text-yellow-600 px-4 py-1  rounded-xl shadow-sm shadow-amber-800 font-[Poppins]">
+            {resultado.nomeTimeCoracaoMesSorte}
+          </span>
+
+
+        </div>
       )}
 
-      <h3 className="text-xl font-semibold text-gray-500 mb-2 mt-3 font-[Poppins]">Detalhes do Sorteio</h3>
+      <h3 className="text-xl font-semibold text-gray-500 mb-2 mt-5 font-[Poppins]">Detalhes do Sorteio</h3>
       <div className="overflow-x-auto">
         <table className="min-w-full border border-gray-300 rounded-lg shadow-sm bg-white">
           <thead className="bg-gray-600 text-white">
