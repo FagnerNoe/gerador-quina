@@ -7,13 +7,29 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
-        const response = await fetch(configs[modalidade].api);
-        const data = await response.json();
-        setResultado(data);
+        const apiOficial = await fetch(configs[modalidade].api);
+        const dataOficial = await apiOficial.json();
+
+        const responseAlt = await fetch(configs[modalidade].apiAlternativa);
+        const dataAlt = await responseAlt.json();
+        console.log("Dados API Alternativa:", dataAlt);
+
+        // Normaliza os campos
+        const concursoOficial = dataOficial.numero;
+        const concursoAlt = dataAlt.numero;
+
+        let resultadoFinal;
+
+        concursoAlt > concursoOficial ? resultadoFinal = dataAlt : resultadoFinal = dataOficial;
+
+        setResultado(resultadoFinal);
       } catch (error) {
-        console.error("Erro ao buscar dados :", error);
-      } finally {
+        console.error("Erro ao buscar dados das APIs:", error);
+        setResultado(null);
+      }
+      finally {
         setLoading(false);
       }
     }
