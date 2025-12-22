@@ -8,21 +8,66 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
+
       try {
+        const cacheKey = `resultado_${modalidade}`;
+        const cachedData = localStorage.getItem(cacheKey);
+        const agora = new Date();
+        const horaAtual = agora.getHours();
+
+        const expiracao = 1000 * 60 * 60; // 1 hora
+        let usarCache = false;
+
+        if (cachedData) {
+          const { data, timestamp } = JSON.parse(cachedData);
+          const valido = Date.now() - timestamp < expiracao;
+
+          if (valido && horaAtual < 21) { // Atualiza após as 21h
+            usarCache = true;
+            setResultado(data);
+            setLoading(false);
+            return;
+          }
+        }
         const apiOficial = await fetch(configs[modalidade].api);
+        if (!apiOficial.ok) {
+          throw new Error("API Oficial não respondeu corretamente");
+        }
         const dataOficial = await apiOficial.json();
 
-        const responseAlt = await fetch(configs[modalidade].apiAlternativa);
-        const dataAlt = await responseAlt.json();
-        console.log("Dados API Alternativa:", dataAlt);
+        let resultadoFinal = dataOficial;
 
-        // Normaliza os campos
-        const concursoOficial = dataOficial.numero;
-        const concursoAlt = dataAlt.numero;
+        //tentar buscar na API alternativa
+        try {
+          const responseAlt = await fetch(configs[modalidade].apiAlternativa);
+          if (!responseAlt.ok) {
+            throw new Error("API Alternativa não respondeu corretamente");
+          }
+          const dataAlt = await responseAlt.json();
+          console.log("Dados API Alternativa:", dataAlt);
 
-        let resultadoFinal;
+          // Normaliza os campos
+          const concursoOficial = dataOficial.numero;
+          const concursoAlt = dataAlt.numero;
 
-        concursoAlt > concursoOficial ? resultadoFinal = dataAlt : resultadoFinal = dataOficial;
+          // só usa alternativa se for mais atual e tiver dezenas válidas
+          const altTemDezenas =
+            dataAlt.dezenas && Array.isArray(dataAlt.dezenas) && dataAlt.dezenas.length > 0;
+
+
+
+          if (concursoAlt > concursoOficial && altTemDezenas) {
+            resultadoFinal = dataAlt;
+          }
+        }
+        catch (error) {
+          console.warn("Falha ao buscar na API alternativa, usando oficial:", error);
+        }
+
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify({ data: resultadoFinal, timestamp: Date.now() })
+        );
 
         setResultado(resultadoFinal);
       } catch (error) {
