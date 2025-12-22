@@ -16,14 +16,14 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
         const horaAtual = agora.getHours();
 
         const expiracao = 1000 * 60 * 60; // 1 hora
-        let usarCache = false;
+        let usarCache;
 
         if (cachedData) {
           const { data, timestamp } = JSON.parse(cachedData);
           const valido = Date.now() - timestamp < expiracao;
 
           if (valido && horaAtual < 21) { // Atualiza após as 21h
-            usarCache = true;
+            
             setResultado(data);
             setLoading(false);
             return;
