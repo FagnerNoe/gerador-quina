@@ -16,7 +16,7 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
         const horaAtual = agora.getHours();
 
         const expiracao = 1000 * 60 * 60; // 1 hora
-        let usarCache;
+      
 
         if (cachedData) {
           const { data, timestamp } = JSON.parse(cachedData);
