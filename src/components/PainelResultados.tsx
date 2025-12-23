@@ -88,7 +88,7 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
     <div className="rounded-lg shadow-md w-full text-center mt-6">
       <h2 className={`text-5xl font-bold bg-clip-text bg-linear-to-r ${configs[modalidade].gradient} text-transparent mb-4 font-[Oleo_Script_Swash_Caps]`}>{modalidade}</h2>
       <span className={`font-bold ${configs[modalidade].background} px-6 py-1 rounded-md text-white text-lg font-[Poppins]`}>{resultado.numero}</span>
-      <p className="text-gray-700 mb-4 mt-1 font-bold font-[Lilita_One]">{resultado.dataApuracao}</p>
+      <p className="text-gray-500 mb-4 mt-1 text-sm font-[Poppins]">{resultado.dataApuracao}</p>
 
 
 
