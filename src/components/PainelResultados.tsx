@@ -146,7 +146,7 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
 
       <div className={`mt-6 p-4 bg-linear-to-l ${configs[modalidade].gradient} rounded-lg`}>
         <h4 className="text-lg font-bold text-white text-center">Estimado para o próximo Concurso</h4>
-        <span className="text-white/70 font-bold text-sm">{resultado.dataProximoConcurso}</span>
+        <span className="text-white/70 font-bold text-xs">{resultado.dataProximoConcurso}</span>
 
         <p className="text-2xl font-bold font-[Poppins] text-white text-center mt-4 bg-white/20 p-2 rounded-2xl">
           R$ {resultado.valorEstimadoProximoConcurso.toLocaleString("pt-BR")}
