@@ -16,14 +16,14 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
         const horaAtual = agora.getHours();
 
         const expiracao = 1000 * 60 * 60; // 1 hora
-      
+
 
         if (cachedData) {
           const { data, timestamp } = JSON.parse(cachedData);
           const valido = Date.now() - timestamp < expiracao;
 
           if (valido && horaAtual < 21) { // Atualiza após as 21h
-            
+
             setResultado(data);
             setLoading(false);
             return;
@@ -146,8 +146,9 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
 
       <div className={`mt-6 p-4 bg-linear-to-l ${configs[modalidade].gradient} rounded-lg`}>
         <h4 className="text-lg font-bold text-white text-center">Estimado para o próximo Concurso</h4>
+        <span className="text-white/70 font-bold text-sm">{resultado.dataProximoConcurso}</span>
 
-        <p className="text-2xl font-bold font-[Poppins] text-white text-center mt-2 bg-white/20 p-2 rounded-2xl">
+        <p className="text-2xl font-bold font-[Poppins] text-white text-center mt-4 bg-white/20 p-2 rounded-2xl">
           R$ {resultado.valorEstimadoProximoConcurso.toLocaleString("pt-BR")}
         </p>
       </div>
