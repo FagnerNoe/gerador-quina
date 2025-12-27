@@ -21,6 +21,55 @@ function escolherColunas(todas: number[], qtd: number): number[] {
   return escolhidas;
 }
 
+function gerarJogoLotomania() {
+  const todasColunas = Array.from({ length: 10 }, (_, i) => i);
+
+  // escolhe 3 colunas para excluir
+  const colunasExcluidas = escolherColunas(todasColunas, 3);
+
+  // colunas válidas
+  const colunasValidas = todasColunas.filter(c => !colunasExcluidas.includes(c));
+
+  const numeros: number[] = [];
+
+  // distribui entre 6 e 8 números por coluna
+  for (const coluna of colunasValidas) {
+    const qtd = Math.floor(Math.random() * 3) + 6; // 6, 7 ou 8
+    let count = 0;
+    while (count < qtd && numeros.length < 50) {
+      const n = coluna + 10 * Math.floor(Math.random() * 10); // número da coluna
+      if (!numeros.includes(n)) {
+        numeros.push(n);
+        count++;
+      }
+    }
+  }
+
+  // completa até 50 números
+  while (numeros.length < 50) {
+    const coluna = colunasValidas[Math.floor(Math.random() * colunasValidas.length)];
+    const n = coluna + 10 * Math.floor(Math.random() * 10);
+    if (!numeros.includes(n)) {
+      numeros.push(n);
+    }
+  }
+
+  numeros.sort((a, b) => a - b);
+
+  const soma = numeros.reduce((acc, n) => acc + n, 0);
+  const pares = numeros.filter(n => n % 2 === 0).length;
+
+  return {
+    jogo: numeros,
+    soma,
+    pares,
+    somaMin: 1900,
+    somaMax: 2400,
+    paresPossiveis: [24, 25, 26],
+    colunasExcluidas
+  };
+}
+
 
 function getEstatisticas(modalidade: Modalidade): Estatisticas {
   switch (modalidade) {
@@ -31,13 +80,7 @@ function getEstatisticas(modalidade: Modalidade): Estatisticas {
     case "Lotofácil":
       return { somaMin: 170, somaMax: 221, paresPossiveis: [7, 8,9],numerosPrimos:[4,5] };
     case "Lotomania":
-    const todasColunas = Array.from({ length: 10 }, (_, i) => i);
-      const colunasExcluidas = escolherColunas(todasColunas, 2);
-      return { 
-        somaMin: 1900, 
-        somaMax: 2400,
-        paresPossiveis: [24,25,26],
-        colunasExcluidas }; // paridade equilibrada
+      return  gerarJogoLotomania();    
     case "Dia de Sorte":
       return { somaMin: 90, somaMax: 140, paresPossiveis: [3, 4] };
     default:

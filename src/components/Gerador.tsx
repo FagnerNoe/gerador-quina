@@ -65,7 +65,7 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
                     <div
                         ref={spinnerRef}
                         className="flex flex-col items-center justify-center p-6">
-                        <div className="w-10 h-10 border-4 border-blue-400 border-t-transparent rounded-full animate-spin"></div>
+                        <div className={`w-10 h-10 border-4 ${configs[modalidade].borda} border-t-transparent rounded-full animate-spin`}></div>
                         <p className="mt-3 text-gray-500 font-[Poppins]">Gerando palpites...</p>
                     </div>
                 ) : (
