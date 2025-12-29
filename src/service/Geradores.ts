@@ -22,28 +22,49 @@ function escolherColunas(todas: number[], qtd: number): number[] {
 }
 
 function gerarJogoLotomania() {
-  const todasColunas = Array.from({ length: 10 }, (_, i) => i);
+  let soma=0;
+  let pares=0;
+  let numeros: number[] = [];
+  let colunasExcluidas: number[] = [];
+  let quantidadePrimos=0;
+  let quantidadeFibonacci=0;
+  let quantidadeDiv3=0;
+  
 
-  // escolhe 3 colunas para excluir
-  const colunasExcluidas = escolherColunas(todasColunas, 3);
+    // lista de primos de 1 a 100
+  const primos = [
+    2, 3, 5, 7, 11, 13, 17, 19, 23, 29,
+    31, 37, 41, 43, 47, 53, 59, 61, 67,
+    71, 73, 79, 83, 89, 97
+  ];
 
-  // colunas válidas
-  const colunasValidas = todasColunas.filter(c => !colunasExcluidas.includes(c));
+   // lista de Fibonacci até 100
+  const fibonacci = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89];
 
-  const numeros: number[] = [];
+   // repete até atender a condição de primos
+  do {
+    numeros = [];
+    const todasColunas = Array.from({ length: 10 }, (_, i) => i);
 
-  // distribui entre 6 e 8 números por coluna
-  for (const coluna of colunasValidas) {
-    const qtd = Math.floor(Math.random() * 3) + 6; // 6, 7 ou 8
-    let count = 0;
-    while (count < qtd && numeros.length < 50) {
-      const n = coluna + 10 * Math.floor(Math.random() * 10); // número da coluna
-      if (!numeros.includes(n)) {
-        numeros.push(n);
-        count++;
+    // escolhe 3 colunas para excluir
+     colunasExcluidas = escolherColunas(todasColunas, 3);
+
+    // colunas válidas
+    const colunasValidas = todasColunas.filter(c => !colunasExcluidas.includes(c));
+
+    // distribui entre 6 e 8 números por coluna
+    for (const coluna of colunasValidas) {
+      const qtd = Math.floor(Math.random() * 3) + 6; // 6, 7 ou 8
+      let count = 0;
+      while (count < qtd && numeros.length < 50) {
+        const n = coluna + 10 * Math.floor(Math.random() * 10); // número da coluna
+        if (!numeros.includes(n)) {
+          numeros.push(n);
+          count++;
+        }
       }
     }
-  }
+
 
   // completa até 50 números
   while (numeros.length < 50) {
@@ -56,8 +77,15 @@ function gerarJogoLotomania() {
 
   numeros.sort((a, b) => a - b);
 
-  const soma = numeros.reduce((acc, n) => acc + n, 0);
-  const pares = numeros.filter(n => n % 2 === 0).length;
+   soma = numeros.reduce((acc, n) => acc + n, 0);
+   pares = numeros.filter(n => n % 2 === 0).length;
+  quantidadePrimos = numeros.filter(n => primos.includes(n)).length;
+  quantidadeFibonacci = numeros.filter(n => fibonacci.includes(n)).length;
+  quantidadeDiv3 = numeros.filter(n => n % 3 === 0).length;
+  } while (quantidadePrimos < 8 || quantidadePrimos > 20
+    || quantidadeFibonacci < 2 || quantidadeFibonacci > 6
+    || quantidadeDiv3 < 12 || quantidadeDiv3 > 20
+  );
 
   return {
     jogo: numeros,
@@ -66,7 +94,10 @@ function gerarJogoLotomania() {
     somaMin: 1900,
     somaMax: 2400,
     paresPossiveis: [24, 25, 26],
-    colunasExcluidas
+    colunasExcluidas,
+    quantidadePrimos,
+    quantidadeFibonacci,
+    quantidadeDiv3
   };
 }
 
