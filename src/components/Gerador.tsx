@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { configs, type Modalidade } from "../service/Config";
 import { gerarNumeros } from "../service/Geradores";
 
@@ -8,6 +8,7 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
     const [jogos, setJogos] = useState<number[][]>([]);
     const [loading, setLoading] = useState<boolean>(false);
     const spinnerRef = useRef<HTMLDivElement>(null);
+    const jogosRef = useRef<HTMLDivElement>(null);
 
 
     useEffect(() => {
@@ -15,6 +16,13 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
             spinnerRef.current.scrollIntoView({ behavior: "smooth" });
         }
     }, [loading]);
+
+
+    useEffect(() => {
+        if (jogos.length > 0 && jogosRef.current) {
+            jogosRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    }, [jogos]);
 
 
     useEffect(() => {
@@ -72,8 +80,10 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
 
 
 
-                    jogos.map((jogo: any, index: number) => (
-                        <div key={index} className={`grid border ${configs[modalidade].borda} w-full p-3 rounded-lg gap-x-2 gap-y-3 items-center justify-center shadow-md
+                    jogos.map((jogo: number[], index: number) => (
+                        <div
+                            ref={jogosRef}
+                            key={index} className={`grid border ${configs[modalidade].borda} w-full p-3 rounded-lg gap-x-2 gap-y-3 items-center justify-center shadow-md
                     ${modalidade === "Mega-Sena" ? "grid-cols-6 gap-x-2" : "grid-cols-5"} 
                     ${modalidade === "Dia de Sorte" ? "grid-cols-7  " : ""}
                     `}>

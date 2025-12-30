@@ -32,7 +32,7 @@ export const configs: Record<Modalidade, { api: string; apiAlternativa:string; g
   "Lotofácil": {
     api: "https://servicebus2.caixa.gov.br/portaldeloterias/api/lotofacil",
     apiAlternativa: "https://api.guidi.dev.br/loteria/lotofacil/ultimo",
-    gradient: "from-purple-700 to-pink-300 ",
+    gradient: "from-purple-700 to-pink-400 ",
     background: "bg-purple-600",
     color: "shadow-purple-400",
     borda: "border-purple-400",
