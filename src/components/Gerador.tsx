@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { configs, type Modalidade } from "../service/Config";
 import { gerarNumeros } from "../service/Geradores";
 
