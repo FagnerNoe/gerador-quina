@@ -1,6 +1,8 @@
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { configs, type Modalidade } from "../service/Config";
 import { gerarNumeros } from "../service/Geradores";
+
+
 
 
 export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
@@ -9,6 +11,20 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
     const [loading, setLoading] = useState<boolean>(false);
     const spinnerRef = useRef<HTMLDivElement>(null);
     const jogosRef = useRef<HTMLDivElement>(null);
+    const [concursoAnterior, setConcursoAnterior] = useState<number[]>([]);
+
+    useEffect(() => {
+        async function fetchConcurso() {
+            const resp = await fetch(configs["Lotofácil"].api);
+            const data = await resp.json();
+            console.log("Dados concurso anterior Lotofácil:", data.listaDezenas);
+
+            // garante que seja um array de números
+            const dezenas = data.listaDezenas.map((d: string | number) => Number(d));
+            setConcursoAnterior(dezenas);
+        }
+        fetchConcurso();
+    }, []);
 
 
     useEffect(() => {
@@ -35,11 +51,11 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
         setTimeout(() => {
             const novosJogos: number[][] = [];
             for (let i = 0; i < quantidade; i++) {
-                novosJogos.push(gerarNumeros(modalidade));
+                novosJogos.push(gerarNumeros(modalidade, concursoAnterior));
             }
             setJogos(novosJogos);
             setLoading(false);
-        }, 1500); //simula tempo de processamento
+        }, 2000); //simula tempo de processamento
     };
 
     const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
@@ -87,13 +103,13 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
                     ${modalidade === "Mega-Sena" ? "grid-cols-6 gap-x-2" : "grid-cols-5"} 
                     ${modalidade === "Dia de Sorte" ? "grid-cols-7  " : ""}
                     `}>
-                            {jogo.map((num: any) => (
-                                <span key={num} className={`flex items-center justify-center rounded-full border-2 text-indigo-800 font-bold shadow-md
+                            {jogo.map((num: number, index: number) => (
+                                <span key={`${num}-${index}`} className={`flex items-center justify-center rounded-full border-2 text-indigo-800 font-bold shadow-md
                             ${configs[modalidade].borda} 
                         ${modalidade === "Dia de Sorte" ? "w-10 h-10" : "p-3 w-12 h-12"}
                     
                            `}>
-                                    {num}
+                                    {num.toString().padStart(2, '0')}
                                 </span>
 
                             ))}

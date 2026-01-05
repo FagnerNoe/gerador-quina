@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { configs, type Modalidade } from "../service/Config";
 
+
 function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
   const [resultado, setResultado] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
     async function fetchData() {
@@ -81,6 +83,9 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
     fetchData();
   }, [modalidade]);
 
+
+
+
   if (loading) return <p className="text-center text-lg font-semibold">Carregando resultados...</p>;
   if (!resultado) return <p className="text-center text-red-500">Não foi possível carregar os dados.</p>;
 
@@ -152,6 +157,7 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
           R$ {resultado.valorEstimadoProximoConcurso.toLocaleString("pt-BR")}
         </p>
       </div>
+
     </div>
   );
 }
