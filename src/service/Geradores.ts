@@ -103,7 +103,6 @@ function gerarLotofacil(concursoAnterior: number[]): number[] {
   // conjuntos especiais
   const primos = [2,3,5,7,11,13,17,19,23];
   const fibonacci = [1,2,3,5,8,13,21];
-
   const resultado: Set<number> = new Set<number>();
 
  
@@ -116,55 +115,74 @@ function gerarLotofacil(concursoAnterior: number[]): number[] {
     }
   };
 
-
-
-  // 1. repete 8 a 10 dezenas do concurso anterior
-  const qtdRepetidas = Math.floor(Math.random() * 3) + 8; // 8..10
+  // 1. repete 8 a 9 números do concurso anterior
+  const qtdRepetidas = Math.floor(Math.random() * 3) + 7; // 
   const repetidas = [...concursoAnterior]
-    .sort(() => Math.random() - 0.5)
-    .slice(0, qtdRepetidas);
+  .sort(() => Math.random() - 0.5)
+  .slice(0, qtdRepetidas);
+  const repetidasSet = new Set(repetidas);
   addUnique(repetidas);
 
- // 2. garante 4 a 5 primos
-  const qtdPrimos = Math.floor(Math.random() * 2) + 4; // 4..5
-  const primosEscolhidos = primos
-    .filter(p => !resultado.has(p))
-    .sort(() => Math.random() - 0.5)
-    .slice(0, qtdPrimos);
-  addUnique(primosEscolhidos);
 
-
+const qtdPrimos = Math.floor(Math.random() * 2) + 4; // 4..5
+ const primosEscolhidos= primos
+ .filter(p => !repetidasSet.has(p) && !repetidasSet.has(p))
+ .sort(() => Math.random() - 0.5)
+  .slice(0, qtdPrimos);
+addUnique(primosEscolhidos);
 
     // 3. garante 7 a 8 ímpares
- const qtdImpares = Math.floor(Math.random() * 2) + 7; 
-  const qtdPares = 15 - qtdImpares; // o resto será par
-
+  const qtdImpares = Math.floor(Math.random() * 2) + 7; 
   const impares = dezenas.filter(n => n % 2 !== 0);
-  const pares = dezenas.filter(n => n % 2 === 0);
+  const qtdPares = 15 - qtdImpares;
+ const pares = dezenas.filter(n => n % 2 === 0);
 
-  while ([...resultado].filter(n => n % 2 !== 0).length < qtdImpares) {
-    resultado.add(impares[Math.floor(Math.random() * impares.length)]);
-  }
- while ([...resultado].filter(n => n % 2 === 0).length < qtdPares && resultado.size < 15) {
-    resultado.add(pares[Math.floor(Math.random() * pares.length)]);
-  }
+// força quantidade de ímpares
+while ([...resultado].filter(n => n % 2 !== 0).length < qtdImpares && resultado) {
+  const candidato = impares[Math.floor(Math.random() * impares.length)];
+  if (!repetidasSet.has(candidato)) resultado.add(candidato);
+
+}
+
+// força quantidade de pares
+while ([...resultado].filter(n => n % 2 === 0).length < qtdPares && resultado.size < 15) {
+  const candidato = pares[Math.floor(Math.random() * pares.length)];
+  if (!repetidasSet.has(candidato)) resultado.add(candidato);
+}
 
 
   // 4. garante 3 a 5 Fibonacci
   const qtdFib = Math.floor(Math.random() * 3) + 3; // 3..5
-  const fibEscolhidos = fibonacci
-    .filter(f => !resultado.has(f))
+  const fibDisponiveis = fibonacci.filter(f => !resultado.has(f));
+
+  const fibEscolhidos = fibDisponiveis
     .sort(() => Math.random() - 0.5)
     .slice(0, qtdFib);
-  addUnique(fibEscolhidos);
 
-
-
-  // 5. completa até 15 dezenas
-  while (resultado.size < 15) {
-    resultado.add(dezenas[Math.floor(Math.random() * dezenas.length)]);
-  
+    // adiciona os escolhidos
+for (const f of fibEscolhidos) {
+  if (resultado.size < 15) {
+    resultado.add(f);
   }
+}
+
+  
+// força quantidade de Fibonacci
+while (
+  [...resultado].filter(n => fibonacci.includes(n)).length < qtdFib && resultado.size < 15){
+    const candidato = fibonacci[Math.floor(Math.random() * fibonacci.length)];
+  if (!repetidasSet.has(candidato)) resultado.add(candidato);
+
+  }
+
+const imparesRestantes = impares.filter(n => !resultado.has(n));
+const paresRestantes = pares.filter(n => !resultado.has(n));
+
+while (resultado.size < 15) {
+  const pool = resultado.size % 2 === 0 ? imparesRestantes : paresRestantes;
+  resultado.add(pool[Math.floor(Math.random() * pool.length)]);
+}
+
 
   // ordena resultado
   return [...resultado].sort((a, b) => a - b);
@@ -264,5 +282,7 @@ const estat = getEstatisticas(modalidade);
   }
   
 }
+
+
 
 

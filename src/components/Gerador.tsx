@@ -45,17 +45,62 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
         setJogos([]);
     }, [modalidade]);
 
+    const validarLotofacil = (jogo: number[], concursoAnterior: number[]): boolean => {
+        if (jogo.length !== 15) return false;
 
-    const handleGerar = () => {
+        const impares = jogo.filter(n => n % 2 !== 0).length;
+        const pares = jogo.filter(n => n % 2 === 0).length;
+        const fib = jogo.filter(n => [1, 2, 3, 5, 8, 13, 21].includes(n)).length;
+        const primos = jogo.filter(n => [2, 3, 5, 7, 11, 13, 17, 19, 23].includes(n)).length;
+        const repetidas = jogo.filter(n => concursoAnterior.includes(n)).length;
+
+
+        // regras da Lotofácil
+        return (
+            impares >= 7 && impares <= 9 &&
+            pares === 15 - impares &&
+            fib >= 3 && fib <= 5 &&
+            primos >= 4 && primos <= 5 &&
+            repetidas >= 8 && repetidas <= 9
+        );
+    };
+
+
+    const handleGerar = async () => {
         setLoading(true);
-        setTimeout(() => {
-            const novosJogos: number[][] = [];
-            for (let i = 0; i < quantidade; i++) {
-                novosJogos.push(gerarNumeros(modalidade, concursoAnterior));
+
+        const novosJogos: number[][] = [];
+
+        // marca início
+        const start = Date.now();
+
+        for (let i = 0; i < quantidade; i++) {
+            let jogo: number[] = [];
+
+            if (modalidade === "Lotofácil") {
+                // gerar até validar
+                do {
+                    jogo = gerarNumeros(modalidade, concursoAnterior);
+                } while (!validarLotofacil(jogo, concursoAnterior));
+            } else {
+                jogo = gerarNumeros(modalidade, concursoAnterior);
             }
-            setJogos(novosJogos);
-            setLoading(false);
-        }, 2000); //simula tempo de processamento
+
+            novosJogos.push(jogo);
+        }
+
+        setJogos(novosJogos);
+
+        // calcula quanto tempo passou
+        const elapsed = Date.now() - start;
+        const minDelay = 1500; // spinner mínimo de 1,5s
+
+        if (elapsed < minDelay) {
+            // espera o tempo restante
+            await new Promise(resolve => setTimeout(resolve, minDelay - elapsed));
+        }
+
+        setLoading(false);
     };
 
     const meses = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
