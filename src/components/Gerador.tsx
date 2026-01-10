@@ -71,8 +71,6 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
 
         const novosJogos: number[][] = [];
 
-        // marca início
-        const start = Date.now();
 
         for (let i = 0; i < quantidade; i++) {
             let jogo: number[] = [];
