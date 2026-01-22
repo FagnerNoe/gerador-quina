@@ -6,6 +6,15 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
   const [resultado, setResultado] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
+  const numerosDecimais = (num: number) => {
+    return num.toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+
+    });
+  };
+
+
 
   useEffect(() => {
     async function fetchData() {
@@ -141,7 +150,7 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
                 <td className="px-4 py-2 font-medium">{premio.numeroDeGanhadores}</td>
                 <td className={`px-4 py-2 ${configs[modalidade].background} text-white
                  font-semibold font-[Poppins] text-center`}>
-                  R$ {premio.valorPremio.toLocaleString("pt-BR")}
+                  R$ {numerosDecimais(premio.valorPremio)}
                 </td>
               </tr>
             ))}
