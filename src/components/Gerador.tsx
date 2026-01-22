@@ -71,8 +71,6 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
 
         const novosJogos: number[][] = [];
 
-        // marca início
-        const start = Date.now();
 
         for (let i = 0; i < quantidade; i++) {
             let jogo: number[] = [];
@@ -90,15 +88,6 @@ export const Generator = ({ modalidade }: { modalidade: Modalidade }) => {
         }
 
         setJogos(novosJogos);
-
-        // calcula quanto tempo passou
-        const elapsed = Date.now() - start;
-        const minDelay = 1500; // spinner mínimo de 1,5s
-
-        if (elapsed < minDelay) {
-            // espera o tempo restante
-            await new Promise(resolve => setTimeout(resolve, minDelay - elapsed));
-        }
 
         setLoading(false);
     };
