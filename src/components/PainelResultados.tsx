@@ -48,32 +48,6 @@ function PainelResultados({ modalidade }: { modalidade: Modalidade }) {
 
         let resultadoFinal = dataOficial;
 
-        //tentar buscar na API alternativa
-        try {
-          const responseAlt = await fetch(configs[modalidade].apiAlternativa);
-          if (!responseAlt.ok) {
-            throw new Error("API Alternativa não respondeu corretamente");
-          }
-          const dataAlt = await responseAlt.json();
-          console.log("Dados API Alternativa:", dataAlt);
-
-          // Normaliza os campos
-          const concursoOficial = dataOficial.numero;
-          const concursoAlt = dataAlt.numero;
-
-          // só usa alternativa se for mais atual e tiver dezenas válidas
-          const altTemDezenas =
-            dataAlt.dezenas && Array.isArray(dataAlt.dezenas) && dataAlt.dezenas.length > 0;
-
-
-
-          if (concursoAlt > concursoOficial && altTemDezenas) {
-            resultadoFinal = dataAlt;
-          }
-        }
-        catch (error) {
-          console.warn("Falha ao buscar na API alternativa, usando oficial:", error);
-        }
 
         localStorage.setItem(
           cacheKey,
